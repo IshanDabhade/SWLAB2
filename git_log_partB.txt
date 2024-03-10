@@ -1,0 +1,96 @@
+commit 2bbdc67a346a2bedf33426333687cc1214243562
+Author: IshanDabhade <ishandabhade@gmail.com>
+Date:   Sun Mar 10 14:47:45 2024 +0530
+
+    Readding file2.txt
+
+diff --git a/file2.txt b/file2.txt
+new file mode 100644
+index 0000000..1f87781
+--- /dev/null
++++ b/file2.txt
+@@ -0,0 +1,2 @@
++Graduation yr: 2025 
++Company: Goldman Sachs 
+
+commit 7dc27a779b477a22d833872b556599e4cdcaa030
+Author: IshanDabhade <ishandabhade@gmail.com>
+Date:   Sun Mar 10 14:42:42 2024 +0530
+
+    fav colour added to first file n deleted the second file
+
+diff --git a/file1.txt b/file1.txt
+index 439b09a..9b71849 100644
+--- a/file1.txt
++++ b/file1.txt
+@@ -1,3 +1,4 @@
+ Ishan Sandeep Dabhade , COMPUTER SCIENCE
+ Tanjore-enter the Deccan
+ Race 2
++Black 
+diff --git a/file2.txt b/file2.txt
+deleted file mode 100644
+index 1f87781..0000000
+--- a/file2.txt
++++ /dev/null
+@@ -1,2 +0,0 @@
+-Graduation yr: 2025 
+-Company: Goldman Sachs 
+
+commit f190af61e6f8539c5dea4b33b495ea1b8923f67a
+Author: IshanDabhade <ishandabhade@gmail.com>
+Date:   Sun Mar 10 13:59:26 2024 +0530
+
+     Just added my graduation yr and my first company
+
+diff --git a/file2.txt b/file2.txt
+new file mode 100644
+index 0000000..1f87781
+--- /dev/null
++++ b/file2.txt
+@@ -0,0 +1,2 @@
++Graduation yr: 2025 
++Company: Goldman Sachs 
+
+commit 52e713b2232904412e50b64d3a951f7182c7481b
+Author: IshanDabhade <ishandabhade@gmail.com>
+Date:   Sun Mar 10 13:42:30 2024 +0530
+
+    Added fav restaurant n movie to my file
+
+diff --git a/file1.txt b/file1.txt
+index 230de2e..439b09a 100644
+--- a/file1.txt
++++ b/file1.txt
+@@ -1 +1,3 @@
+ Ishan Sandeep Dabhade , COMPUTER SCIENCE
++Tanjore-enter the Deccan
++Race 2
+
+commit b4dc0a033d5351b59b8588e254b6ce37296b9897
+Author: IshanDabhade <ishandabhade@gmail.com>
+Date:   Sun Mar 10 13:39:14 2024 +0530
+
+    Now has my major
+
+diff --git a/file1.txt b/file1.txt
+index f9a7671..230de2e 100644
+--- a/file1.txt
++++ b/file1.txt
+@@ -1 +1 @@
+-Ishan Sandeep Dabhade , # BT22CSE090
++Ishan Sandeep Dabhade , COMPUTER SCIENCE
+
+commit 107e55cc5a1c54e210751a0756b6cebbfbcae470
+Author: IshanDabhade <ishandabhade@gmail.com>
+Date:   Sun Mar 10 13:03:15 2024 +0530
+
+    Committing a new file with my name
+
+diff --git a/file1.txt b/file1.txt
+new file mode 100644
+index 0000000..f9a7671
+--- /dev/null
++++ b/file1.txt
+@@ -0,0 +1 @@
++Ishan Sandeep Dabhade , # BT22CSE090
