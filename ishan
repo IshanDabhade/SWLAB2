@@ -1,0 +1,267 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+#define NUMBEROFNODES 8
+
+typedef struct node_tag
+{
+	int val;
+    bool Mark;
+    int ReferenceCount;
+    struct node_tag *Next1;
+    struct node_tag *Next2;
+    struct node_tag *Next3;
+}Node;
+
+Node *NodeList[NUMBEROFNODES];
+
+void SetNodeEdges(int source_node,int end_node_1,int end_node_2,int end_node_3)
+{
+	if(end_node_1 != -1)
+	{
+		NodeList[source_node]->Next1 = NodeList[end_node_1];
+		NodeList[end_node_1]->ReferenceCount = NodeList[end_node_1]->ReferenceCount + 1;
+	}
+	if(end_node_2 != -1)
+	{
+		NodeList[source_node]->Next2 = NodeList[end_node_2];
+		NodeList[end_node_2]->ReferenceCount = NodeList[end_node_2]->ReferenceCount + 1;
+	}
+	if(end_node_3 != -1)
+	{
+		NodeList[source_node]->Next3 = NodeList[end_node_3];
+		NodeList[end_node_3]->ReferenceCount = NodeList[end_node_3]->ReferenceCount + 1;
+	}
+}
+
+void PrintAllNodesAccessibleThroughRootPointer(Node* root)
+{
+	if(root!=NULL)
+	{
+		printf("Node Value = %d:ReferenceCount = %d \n",root->val,root->ReferenceCount);
+		PrintAllNodesAccessibleThroughRootPointer(root->Next1);
+		PrintAllNodesAccessibleThroughRootPointer(root->Next2);
+		PrintAllNodesAccessibleThroughRootPointer(root->Next3);
+	}
+}
+
+void PrintAdjacencyList()
+{
+	int i = 0;
+	for(i = 0;i < NUMBEROFNODES;i++)
+	{
+		if(NodeList[i]!=NULL) 
+		{
+			printf("Node Value = %d: ",NodeList[i]->val);
+			if(NodeList[i]->Next1 != NULL)
+			{
+				printf("%d->",NodeList[i]->Next1->val);
+			}
+			if(NodeList[i]->Next2!=NULL)
+			{
+				printf("%d ->",NodeList[i]->Next2->val);
+			}
+			if(NodeList[i]->Next3!=NULL)
+			{
+				printf("%d ->",NodeList[i]->Next3->val);
+			}
+			printf("NULL\n");
+		}
+	}
+}
+
+void PrintAdjacencyMatrix()
+{
+	int AdjacencyMatrix[NUMBEROFNODES][NUMBEROFNODES];
+	int i,j,k;
+	
+	for(i = 0;i < NUMBEROFNODES;i++)
+	{
+		for(j = 0;j < NUMBEROFNODES;j++)
+		{
+			AdjacencyMatrix[i][j]=0;
+		}	
+	}
+	
+	for(i = 0;i < NUMBEROFNODES;i++)
+	{
+		for(j = 0;j < NUMBEROFNODES;j++)
+		{
+			
+		if(NodeList[i] != NULL && NodeList[j] != NULL)
+		{
+			if(NodeList[i]->Next1!=NULL)
+			{
+				if(NodeList[i]->Next1->val == NodeList[j]->val && i != j)
+				{
+					AdjacencyMatrix[i][j] = AdjacencyMatrix[i][j] + 1;
+				}
+			}
+			if(NodeList[i]->Next2 != NULL)
+			{
+				if(NodeList[i]->Next2->val == NodeList[j]->val && i != j)
+				{
+					AdjacencyMatrix[i][j] = AdjacencyMatrix[i][j] + 1;
+				}
+			}
+			if(NodeList[i]->Next3 != NULL)
+			{
+				if(NodeList[i]->Next3->val == NodeList[j]->val && i != j)
+				{
+					AdjacencyMatrix[i][j] = AdjacencyMatrix[i][j] + 1;
+				}
+			}
+		}
+		
+		}
+	}
+	
+	for(i = 0;i < 8;i++)
+	{
+		for(j = 0;j < 8;j++)
+		{
+			printf("%d ",AdjacencyMatrix[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+void MarkNodes(Node* root)
+{
+	
+	if(root != NULL)
+	{
+		root->Mark = true;
+		MarkNodes(root->Next1);
+		MarkNodes(root->Next2);
+		MarkNodes(root->Next3);
+	}
+}
+// frees the space if mark bit is false i.e. zero
+void SweepNodes()
+{
+	int i;
+	for(i = 0;i < NUMBEROFNODES;i++)
+	{
+		if(NodeList[i]->Mark == false)
+		{
+			if(NodeList[i]->Next1 != NULL)
+			{
+				NodeList[i]->Next1->ReferenceCount = NodeList[i]->Next1->ReferenceCount - 1;
+			}
+			if(NodeList[i]->Next2 != NULL)
+			{
+				NodeList[i]->Next2->ReferenceCount = NodeList[i]->Next2->ReferenceCount - 1;
+			}
+			if(NodeList[i]->Next3 != NULL)
+			{
+				NodeList[i]->Next3->ReferenceCount = NodeList[i]->Next3->ReferenceCount - 1;
+			}
+			printf("The node %d is a garbage node \n",NodeList[i]->val);
+			free(NodeList[i]);
+			NodeList[i]=NULL;
+		}
+	}
+}
+
+int CheckWhetherRootIsPresent(Node* root,Node* temp_node)
+{
+	if(root == NULL)
+	{
+		return 0;
+	}
+	if(root->val == temp_node->val)
+	{
+		return 1;
+	}
+	if(CheckWhetherRootIsPresent(root->Next1,temp_node) == 1)
+	{
+		return 1;
+	}
+	
+	if(CheckWhetherRootIsPresent(root->Next2,temp_node) == 1)
+	{
+		return 1;
+	}
+	if(CheckWhetherRootIsPresent(root->Next3,temp_node) == 1)
+	{
+		return 1;
+	}
+ return 0;
+}
+
+void CountReference(Node* root)
+{
+	int i=0;
+	while(i < NUMBEROFNODES)
+	{
+		if(CheckWhetherRootIsPresent(root,NodeList[i]) == 0)
+		{		
+			if(NodeList[i]->Next1 != NULL)
+			{
+				NodeList[i]->Next1->ReferenceCount = NodeList[i]->Next1->ReferenceCount - 1;
+			}
+			if(NodeList[i]->Next2 != NULL)
+			{
+				NodeList[i]->Next2->ReferenceCount = NodeList[i]->Next2->ReferenceCount - 1;
+			}
+			if(NodeList[i]->Next3 != NULL)
+			{
+				NodeList[i]->Next3->ReferenceCount = NodeList[i]->Next3->ReferenceCount - 1;
+			}
+			printf("The node %d is a garbage node \n",NodeList[i]->val);
+			free(NodeList[i]);
+			NodeList[i]=NULL;
+		}
+		 i = i + 1;	
+	}
+	 
+}
+
+int main()
+{
+	int array[NUMBEROFNODES] = {1,2,3,5,7,8,9,10};
+	int i;
+	for(i = 0;i < NUMBEROFNODES;i++)
+	{
+		Node* new_node =(Node*)malloc(sizeof(Node));
+		new_node->val=array[i];
+		new_node->Next1=NULL;
+		new_node->Next2=NULL;
+		new_node->Next3=NULL;
+		new_node->ReferenceCount=0;
+		new_node->Mark=false;		
+		NodeList[i]=new_node;
+	}
+
+	Node *root_ptr_1 = NodeList[3];
+	NodeList[3]->ReferenceCount = NodeList[3]->ReferenceCount + 1;
+	Node *root_ptr_2 = NodeList[0];
+	NodeList[0]->ReferenceCount = NodeList[0]->ReferenceCount + 1;
+	SetNodeEdges(0,1,6,7);
+	SetNodeEdges(2,5,7,-1);
+	SetNodeEdges(3,0,-1,-1);
+	SetNodeEdges(4,0,5,-1);
+	SetNodeEdges(5,6,-1,-1);
+	printf("\nAll nodes through Root-1:\n");
+	PrintAllNodesAccessibleThroughRootPointer(root_ptr_1);
+	printf("\nAll nodes through Root-2:\n");
+	PrintAllNodesAccessibleThroughRootPointer(root_ptr_2);
+	printf("\n\nAdjacency list :\n");
+	PrintAdjacencyList();
+	printf("\n\nAdjacency matrix:\n");
+	PrintAdjacencyMatrix();
+	MarkNodes(root_ptr_1);
+	MarkNodes(root_ptr_2);
+	SweepNodes();
+	printf("\n\nAdjacency list after removal of garbage:\n");
+	PrintAdjacencyList();
+	printf("\n\nAdjacency matrix after removal of garbage:\n");
+	PrintAdjacencyMatrix();
+	// CountReference(root_ptr_1); 
+	// printf("\n\nAdjacency list after removal of garbage:\n");
+	// PrintAdjacencyList();
+	// printf("\n\nAdjacency matrix after removal of garbage:\n");
+	// PrintAdjacencyMatrix();
+	return 0;
+}
